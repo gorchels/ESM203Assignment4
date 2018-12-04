@@ -1,0 +1,24 @@
+---
+title: "ESM203Assignment4"
+author: "Madeline Gorchels"
+date: "12/4/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r} 
+#package and df loading code chunk
+
+library(tidyverse)
+library(knitr)
+library(kableExtra)
+
+flooding_df = read_csv("NYCflooding.csv")
+#View(flooding_df)
+x = rnorm(1000, mean = 0, sd = 1)
+View(x)
+```
+
