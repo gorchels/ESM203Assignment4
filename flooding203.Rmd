@@ -16,9 +16,107 @@ library(tidyverse)
 library(knitr)
 library(kableExtra)
 
+
+```
+
+```{r}
 flooding_df = read_csv("NYCflooding.csv")
 #View(flooding_df)
-x = rnorm(1000, mean = 0, sd = 1)
-View(x)
+high_tide = 2.5
+low_tide = -2.5
+sea_sd = 3
+prob_flood_high = (pnorm(5, mean = high_tide, sd = sea_sd, lower.tail = FALSE))
+prob_flood_high
+
+prob_flood_low = (pnorm(5, mean = low_tide, sd = sea_sd, lower.tail = FALSE))
+prob_flood_low
+
+```
+
+```{r}
+high_tide_s1 = 3.5
+low_tide_s1 = -1.5
+sea_sd = 3
+prob_flood_high_s1 = (pnorm(5, mean = high_tide_s1, sd = sea_sd, lower.tail = FALSE))
+prob_flood_high_s1
+
+prob_flood_low_s1 = (pnorm(5, mean = low_tide_s1, sd = sea_sd, lower.tail = FALSE))
+prob_flood_low_s1
+```
+```{r}
+high_tide_s2 = 4.5
+low_tide_s2 = -0.5
+sea_sd = 3
+prob_flood_high_s2 = (pnorm(5, mean = high_tide_s2, sd = sea_sd, lower.tail = FALSE))
+prob_flood_high_s2
+
+prob_flood_low_s2 = (pnorm(5, mean = low_tide_s2, sd = sea_sd, lower.tail = FALSE))
+prob_flood_low_s2
+```
+```{r}
+high_tide_s3 = 5.5
+low_tide_s3 = 0.5
+sea_sd = 3
+prob_flood_high_s3 = (pnorm(5, mean = high_tide_s3, sd = sea_sd, lower.tail = FALSE))
+prob_flood_high_s3
+
+prob_flood_low_s3 = (pnorm(5, mean = low_tide_s3, sd = sea_sd, lower.tail = FALSE))
+prob_flood_low_s3
+```
+
+```{r}
+meter_in_conv = 0.0254
+low_est_2020 = 2*meter_in_conv
+low_est_2050 = 7*meter_in_conv
+
+mid_25_2020 = 4*meter_in_conv
+mid_75_2020 = 8*meter_in_conv
+
+mid_25_2050 = 11*meter_in_conv
+mid_75_2050 = 24*meter_in_conv
+
+high_est_2020 = 11*meter_in_conv
+high_est_2050 = 31*meter_in_conv
+
+```
+
+```{r}
+high_tide_le2020 = high_tide+low_est_2020
+low_tide_le2020 = low_tide+low_est_2020
+sea_sd = 3
+prob_flood_high_le2020 = (pnorm(5, mean = high_tide_le2020, sd = sea_sd, lower.tail = FALSE))
+prob_flood_high_le2020
+
+prob_flood_low_le2020 = (pnorm(5, mean = low_tide_le2020, sd = sea_sd, lower.tail = FALSE))
+prob_flood_low_le2020
+```
+
+```{r}
+high_tide_le2050 = high_tide+low_est_2050
+low_tide_le2050 = low_tide+low_est_2050
+sea_sd = 3
+prob_flood_high_le2050 = (pnorm(5, mean = high_tide_le2050, sd = sea_sd, lower.tail = FALSE))
+prob_flood_high_le2050
+
+prob_flood_low_le2050 = (pnorm(5, mean = low_tide_le2050, sd = sea_sd, lower.tail = FALSE))
+prob_flood_low_le2050
+```
+
+```{r}
+high_tide_m25_2020 = high_tide+low_est_2050
+low_tide_m25_2020 = low_tide+low_est_2050
+sea_sd = 3
+prob_flood_high_le2050 = (pnorm(5, mean = high_tide_le2050, sd = sea_sd, lower.tail = FALSE))
+prob_flood_high_le2050
+
+prob_flood_low_le2050 = (pnorm(5, mean = low_tide_le2050, sd = sea_sd, lower.tail = FALSE))
+prob_flood_low_le2050
+```
+
+```{r}
+prob_df = data.frame(year = c(2020, 2050, 2020, 2050, 2020, 2050, 2020, 2050), 
+                     percentile = c("10th percentile","10th percentile","25th percentile","25th percentile","75th percentile","75th percentile","90th percentile","90th percentile"),
+                     sea_level_rise = c(low_est_2020, low_est_2050, mid_25_2020, mid_75_2020, mid_25_2050, mid_75_2050, high_est_2020, high_est_2050),
+                     probaility = sea_level_rise
 ```
 
