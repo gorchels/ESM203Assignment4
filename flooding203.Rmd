@@ -47,7 +47,7 @@ high_est_2050 = 31*meter_in_conv
 
 prob_df = data.frame(year = c(2018, 2020, 2050, 2020, 2050, 2020, 2050, 2020, 2050), 
                      percentile = c("NA", "10th percentile","10th percentile","25th percentile","25th percentile","75th percentile","75th percentile","90th percentile","90th percentile"),
-                     sea_level_rise = c(0, low_est_2020, low_est_2050, mid_25_2020, mid_75_2020, mid_25_2050, mid_75_2050, high_est_2020, high_est_2050),
+                     sea_level_rise = c(0, low_est_2020, low_est_2050, mid_25_2020, mid_25_2050,  0.2032, mid_75_2050, 11*meter_in_conv, high_est_2050),
                      probablity_high_tide = (pnorm(5, mean =prob_df$sea_level_rise+high_tide, sd = sea_sd, lower.tail = FALSE)),
                      probablity_low_tide = (pnorm(5, mean =prob_df$sea_level_rise+low_tide, sd = sea_sd, lower.tail = FALSE)),
                      probablity_high_tide_one = (pnorm(5, mean =prob_df$sea_level_rise+high_tide+1, sd = sea_sd, lower.tail = FALSE)),
@@ -57,7 +57,7 @@ prob_df = data.frame(year = c(2018, 2020, 2050, 2020, 2050, 2020, 2050, 2020, 20
                       probablity_high_tide_three = (pnorm(5, mean =prob_df$sea_level_rise+high_tide+3, sd = sea_sd, lower.tail = FALSE)),
                      probablity_low_tide_three = (pnorm(5, mean =prob_df$sea_level_rise+low_tide+3, sd = sea_sd, lower.tail = FALSE))) 
 
-
+View(prob_df)
 
 ```
 
@@ -66,18 +66,9 @@ prob_df = data.frame(year = c(2018, 2020, 2050, 2020, 2050, 2020, 2050, 2020, 20
 #creating an 2020 only dataframe
 
 prob_2020 = prob_df %>% 
-  filter(year == 2020)
+  filter(year == 2020|year == 2018)
 
-```
-
-```{r}
-#explorational plot
-
-exp_line = ggplot(prob_2020, aes(x = percentile, y = probablity_high_tide_three))+
-  geom_point()+
-  theme_classic()
-
-exp_line
-
+prob_2050 = prob_df %>% 
+  filter(year == 2050|year == 2018)
 ```
 
