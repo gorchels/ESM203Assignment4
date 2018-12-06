@@ -62,3 +62,22 @@ prob_df = data.frame(year = c(2018, 2020, 2050, 2020, 2050, 2020, 2050, 2020, 20
 ```
 
 
+```{r}
+#creating an 2020 only dataframe
+
+prob_2020 = prob_df %>% 
+  filter(year == 2020)
+
+```
+
+```{r}
+#explorational plot
+
+exp_line = ggplot(prob_2020, aes(x = percentile, y = probablity_high_tide_three))+
+  geom_point()+
+  theme_classic()
+
+exp_line
+
+```
+
