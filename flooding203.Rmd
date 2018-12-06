@@ -65,10 +65,32 @@ View(prob_df)
 ```{r}
 #creating an 2020 only dataframe
 
-prob_2020 = prob_df %>% 
-  filter(year == 2020|year == 2018)
+prob_2020 = tidy_prob %>% 
+  filter(year == 2020)
 
-prob_2050 = prob_df %>% 
-  filter(year == 2050|year == 2018)
+prob_2050 = tidy_prob %>% 
+  filter(year == 2050)
+```
+
+```{r}
+#I used excel to put the information in prob_df in tidy format. Then I subtracted the probability with no climate change from each value. The probabilty tab shows increase in probability from the baseline scenario. 
+
+tidy_prob = read_csv("NYCflooding.csv") %>% 
+  select(-X7,-X8,-X9) %>% 
+  mutate(percent_num = case_when(
+    percentile == "10th percentile"~10, 
+    percentile == "25th percentile"~25,
+    percentile == "75th percentile"~75,
+    percentile == "90th percentile"~90)) %>% 
+  group_by(storm_surge)
+
+```
+
+
+```{r}
+tidy_fig = ggplot(tidy_prob, aes(x = percent_num, y = probabilty_flood))+
+  geom_line(color = storm_surge)
+
+tidy_fig
 ```
 
