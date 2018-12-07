@@ -9,7 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r} 
+```{r, include=FALSE} 
 #package and df loading code chunk
 
 library(tidyverse)
@@ -19,7 +19,7 @@ library(kableExtra)
 ```
 
 
-```{r}
+```{r, include=FALSE}
 #Defining variables 
 high_tide = 2.5
 low_tide = -2.5
@@ -41,7 +41,7 @@ high_est_2050 = 31*meter_in_conv
 ```
 
 
-```{r}
+```{r, echo=FALSE}
 
 #creating a dataframe with all the probabilities 
 
@@ -57,12 +57,11 @@ prob_df = data.frame(year = c(2018, 2020, 2050, 2020, 2050, 2020, 2050, 2020, 20
                       probablity_high_tide_three = (pnorm(5, mean =prob_df$sea_level_rise+high_tide+3, sd = sea_sd, lower.tail = FALSE)),
                      probablity_low_tide_three = (pnorm(5, mean =prob_df$sea_level_rise+low_tide+3, sd = sea_sd, lower.tail = FALSE))) 
 
-View(prob_df)
 
 ```
 
 
-```{r}
+```{r, include=FALSE}
 #creating an 2020 only dataframe
 
 prob_2020 = tidy_prob %>% 
@@ -70,9 +69,21 @@ prob_2020 = tidy_prob %>%
 
 prob_2050 = tidy_prob %>% 
   filter(year == 2050)
+
+prob_2020_low = prob_2020 %>% 
+  filter(tide == "low")
+
+prob_2050_low = prob_2050 %>% 
+  filter(year == "low")
+
+prob_2020_high = prob_2020 %>% 
+  filter(tide == "high")
+
+prob_2050_high = prob_2050 %>% 
+  filter(tide == "high")
 ```
 
-```{r}
+```{r, include=FALSE}
 #I used excel to put the information in prob_df in tidy format. Then I subtracted the probability with no climate change from each value. The probabilty tab shows increase in probability from the baseline scenario. 
 
 tidy_prob = read_csv("NYCflooding.csv") %>% 
@@ -87,10 +98,47 @@ tidy_prob = read_csv("NYCflooding.csv") %>%
 ```
 
 
-```{r}
-tidy_fig = ggplot(tidy_prob, aes(x = percent_num, y = probabilty_flood))+
-  geom_line(color = storm_surge)
+```{r, include=FALSE}
+tidy_fig_2020 = ggplot(prob_2020_high, aes(x = percent_num, y = probabilty_flood), group_by(storm_surge))+
+  geom_point(aes(color = storm_surge, shape = percentile))+
+  theme_classic()+
+  labs(x = "Sea Level Rise Projection Percentile", y = "Increased Probabilty of Flood")
 
-tidy_fig
+tidy_fig_2020
+```
+
+```{r, include=FALSE}
+
+tidy_fig_2050 = ggplot(prob_2050_high, aes(x = percent_num, y = probabilty_flood), group_by(storm_surge))+
+  geom_point(aes(color = storm_surge, shape = percentile))+
+  theme_classic()+
+  labs(x = "Sea Level Rise Projection Percentile", y = "Increased Probabilty of Flood")
+
+tidy_fig_2050
+```
+
+```{r}
+tidy_fig_2020 = ggplot(prob_2020, aes(x = percent_num, y = probabilty_flood), group_by(storm_surge))+
+  geom_point(aes(color = storm_surge, shape = tide))+
+  theme_classic()+
+  labs(x = "Sea Level Rise Projection Percentile", y = "Increased Probabilty of Flood", color = "Storm Surge (m)\n", shape = "Tide\n")+
+  scale_shape_manual(labels = c("High", "Low"), values = c("circle", "triangle"))+
+  scale_y_continuous(expand = c(0.01,0), limits = c(0, 0.05))+
+  scale_x_continuous(expand = c(0,10))
+  
+
+tidy_fig_2020
+```
+```{r}
+tidy_fig_2050 = ggplot(prob_2050, aes(x = percent_num, y = probabilty_flood), group_by(storm_surge))+
+  geom_point(aes(color = storm_surge, shape = tide))+
+  theme_classic()+
+  labs(x = "Sea Level Rise Projection Percentile", y = "Increased Probabilty of Flood", color = "Storm Surge (m)\n", shape = "Tide\n")+
+  scale_shape_manual(labels = c("High", "Low"), values = c("circle", "triangle"))+
+  scale_y_continuous(expand = c(0.01,0), limits = c(0, 0.125))+
+  scale_x_continuous(expand = c(0,10))
+  
+
+tidy_fig_2050
 ```
 
